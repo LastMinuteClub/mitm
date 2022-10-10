@@ -5,7 +5,7 @@ KIT325 group 4 Cyber Security Project implementation.
 
 ## To install
 1. Install XAMPP
-2. Clone this repository to `xampp\htdocs`
+2. Clone this repository to `xampp\htdocs` (I'd recommend using Github Desktop)
 3. Start up Apache and MySQL services in the XAMPP Control Panel or manager-osx (macOS)
 4. In your browser go to `localhost/phpmyadmin`
 5. In the left-hand column, click 'New' to create a new database. Name the database 'KIT325' and click create.
