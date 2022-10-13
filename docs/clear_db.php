@@ -9,6 +9,6 @@
     
 	$result = $conn->query($query);
 
-	header("Location: ../homepage.php?message=");	
+	header("Location: ../homepage.php?message=hello_there:)");	
 	mysqli_close($conn);
 ?>
