@@ -31,7 +31,8 @@ CREATE TABLE `notes` (
   `noteID` int(11) NOT NULL,
   `dateCreated` datetime DEFAULT current_timestamp(),
   `lastEdited` date DEFAULT NULL,
-  `message` varchar(255) NOT NULL
+  `message` varchar(255) NOT NULL,
+  `hash_sha256` varchar(64) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
