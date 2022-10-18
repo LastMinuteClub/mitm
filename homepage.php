@@ -76,6 +76,9 @@
 						<div class="row my-3">
 							<input type="submit" class="btn btn-primary" value="Save" formaction="docs/new_note.php">
 						</div>
+						<div class="row my-3">
+							<input type="submit" class="btn btn-info" value="Save (with hash)" formaction="docs/new_note_hash.php">
+						</div>
 					</form>
 				</div>
 				<div class="row px-5 mt-5">
