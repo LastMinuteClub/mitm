@@ -7,7 +7,7 @@
         header("Location: ../homepage.php");
     }
     
-    $query = "INSERT INTO notes (message) VALUES ('$message')";
+    $query = "INSERT INTO notes (message, hash_sha256) VALUES ('$message', '$data_encrypted')";
 	$result = $conn->query($query);
 	
     console_log("Result: ".$result);
