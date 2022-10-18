@@ -16,28 +16,31 @@ function public_key_encrypt($data, $public_key)
 {
     $encrypted = openssl_public_encrypt($data, $encrypted_data, $public_key);
     //echo($encrypted_data);
-    return $encrypted;
+    return $encrypted_data;
 }
 
 $config = array(
     "config" => "C:/xampp/php/extras/openssl/openssl.cnf",
     'private_key_bits'=> 2048,
     'default_md' => "sha256",
-  );
+);
 
-$new = openssl_pkey_new($config);
+//GENERATE NEW KEYPAIR
+$new_key_pair = openssl_pkey_new($config);
 
-openssl_pkey_export($new, $privatekey);
+//PRIVATE KEY
+openssl_pkey_export($new_key_pair, $privatekey, NULL, $config);
 
-$publickey = openssl_pkey_get_details($new);
+//PUBLIC KEY
+$publickey = openssl_pkey_get_details($new_key_pair);
 $publickey = $publickey["key"];
 
 echo $publickey;
 echo "/////////////////////////////";
 echo $privatekey;
+echo "/////////////////////////////";
 
 $test = public_key_encrypt("test", $publickey);
 
-// $test2 = openssl_private_decrypt($test, $decrypted_data, $privatekey);
-// echo $test2;
-?>
+openssl_private_decrypt($test, $decrypted_data, $privatekey);
+echo $decrypted_data;
