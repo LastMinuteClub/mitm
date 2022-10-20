@@ -14,9 +14,12 @@
 		$query = "UPDATE hosts SET password = '$encrypt_password' WHERE hosts.email = '$session_user'";
 	}
 	
+	//Query DB
 	$conn->query($query);
 	
+	//Change page
 	header("Location: my-details.php");
 	
+	//Close connection to DB
 	mysqli_close($conn);
 ?>
