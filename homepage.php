@@ -7,14 +7,18 @@ include("docs/database/db_conn.php");
 if (isset($_GET['error'])) {
 	$errormessage = $_GET['error'];
 	//show error message using javascript alert
-	echo "<script>alert('$errormessage');</script>";
+	// echo "<script>alert('$errormessage');</script>";
+	echo 
+		"<div style='text-align: center'>
+			<span style='color: red'>$errormessage</span>
+		</div>";
 }
 
 function display_notes()
 {
 	// need to change the ip and port
 	$ip="localhost";
-	$port="8888";
+	$port="";
 	$url="MITM/notelist.php";
 	$query="";
 
@@ -85,15 +89,27 @@ function display_notes()
 				</div>
 				<div class="row px-5">
 					<form method="post" name="note-form" action="new_note.php" class="note-form" id="note-form">
+						<span id="error-message" style="color: red; display: none">Please fill out this field</span>
 						<div class="form-floating">
 							<textarea class="form-control" id="message" name="message" rows="3" required></textarea>
 							<label for="message">New note</label>
 						</div>
 						<div class="row my-3">
-							<input type="submit" class="btn btn-primary" value="Save" formaction="docs/new_note.php">
+							<input type="submit" class="btn btn-primary" value="Save (UC01)" formaction="docs/new_note.php">
 						</div>
 						<div class="row my-3">
-							<input type="submit" class="btn btn-info" value="Save (with hash)" formaction="docs/new_note_hash.php">
+							<input type="button" onclick="submitLatency()" class="btn btn-success" value="Save and check latency (UC02)">
+						</div>
+						<div class="row my-3">
+							<input type="submit" class="btn btn-info" value="Save with hash (UC05)" formaction="docs/new_note_hash.php">
+						</div>
+					</form>
+					<form method="post" name="note-form-latency" action="docs/new_note_latency.php" class="note-form-latency" id="note-form-latency">
+						<div>
+							<input name="time" id="time" hidden>
+						</div>
+						<div>
+							<input name="message-copy" id="message-copy" hidden>
 						</div>
 					</form>
 				</div>
