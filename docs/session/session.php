@@ -1,4 +1,6 @@
 <?php
+// This is just an example php file. Not currently used in this application
+
 //starting session
 session_start();
 
