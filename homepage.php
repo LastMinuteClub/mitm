@@ -14,7 +14,7 @@ function display_notes()
 {
 	// need to change the ip and port
 	$ip="localhost";
-	$port="8888";
+	$port="";
 	$url="MITM/notelist.php";
 	$query="";
 
