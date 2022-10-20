@@ -101,7 +101,7 @@ function display_notes()
 							<input type="button" onclick="submitLatency()" class="btn btn-success" value="Save and check latency (UC02)">
 						</div>
 						<div class="row my-3">
-							<input type="submit" class="btn btn-info" value="Save with hash (UC05)" formaction="docs/new_note_hash.php">
+							<input type="submit" class="btn btn-info" value="Save with hash (UC05)" formaction="docs/new_note_encrypted_with_hash.php">
 						</div>
 					</form>
 					<form method="post" name="note-form-latency" action="docs/new_note_latency.php" class="note-form-latency" id="note-form-latency">
