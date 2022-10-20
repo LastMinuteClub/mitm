@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 function generate_keys()
 {
@@ -20,11 +21,16 @@ function generate_keys()
     $publickey = $publickey["key"]; //Get public key from keypair
 
     //Echo keys
-    echo $publickey;
-    echo "/////////////////////////////";
-    echo $privatekey;
-    echo "/////////////////////////////";
+    // echo $publickey;
+    // echo "/////////////////////////////";
+    // echo $privatekey;
+    // echo "/////////////////////////////";
 
     //Return Array
     return array($privatekey, $publickey);
 }
+
+$keys = generate_keys();
+$_SESSION['server_priv_key'] = $keys[0];
+$_SESSION['server_pub_key'] = $keys[1];
+?>
