@@ -1,27 +1,34 @@
 <?php
+session_start();
 include("database/db_conn.php");
 
-function private_key_decrypt($data, $privatekey)
+//Decrypts data with private key
+function private_key_decrypt($data, $key)
 {
-    //Decrypt using a private key
-    openssl_private_decrypt($data, $decrypted_data, $privatekey);
-    return $decrypted_data; //Returns decrypted data
+    openssl_private_decrypt($data, $decrypted_data, $key);
+    return $decrypted_data;
 }
 
-$message = htmlspecialchars($_POST['message']);
+// if (!isset($_POST['message'])) {
+//     header("Location: ../homepage.php");
+// }
 
-if (!isset($_POST['message'])) {
-    header("Location: ../homepage.php");
-}
+$message = $_POST['data'];
+$test22 = base64_decode($message);
+$key = $_SESSION['server_priv_key'];
+$test = strlen($key);
 
-$message = private_key_decrypt($message, "ADD PRIV KEY");
+
+var_dump($_POST["data"]);
+$message = private_key_decrypt($test22, $key);
+// $message = "aaa";
 
 $query = "INSERT INTO notes (message) VALUES ('$message')";
 $result = $conn->query($query);
 
 console_log("Result: " . $result);
 
-header("Location: ../homepage.php");
+// header("Location: ../homepage.php");
 mysqli_close($conn);
 
 // Console function

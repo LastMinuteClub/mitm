@@ -1,8 +1,6 @@
 <?php
 require 'vendor/autoload.php';
-
 include("docs/database/db_conn.php");
-
 //If there is any received error message 
 if (isset($_GET['error'])) {
 	$errormessage = $_GET['error'];
@@ -12,6 +10,12 @@ if (isset($_GET['error'])) {
 		"<div style='text-align: center'>
 			<span style='color: red'>$errormessage</span>
 		</div>";
+}
+
+session_start();
+if(!isset($_SESSION['server_priv_key']) && !isset($_SESSION['server_pub_key']))
+{
+	include("docs/serverside/create_private_public_key.php");
 }
 
 function display_notes()
@@ -53,6 +57,30 @@ function display_notes()
 	}
 }
 
+//Encrypts data with public key
+function public_key_encrypt($data, $public_key)
+{
+    openssl_public_encrypt($data, $encrypted_data, $public_key);
+    return $encrypted_data;
+}
+	
+if(isset($_POST['uc04']))
+{
+	//var_dump($_SESSION['server_priv_key']);
+	$data = htmlspecialchars($_POST['message']);
+	$key = $_SESSION['server_pub_key'];
+
+	$encrypted_data = public_key_encrypt($data, $key);
+	$encrypted_data = base64_encode($encrypted_data);
+	//var_dump($encrypted_data);
+	$client = new GuzzleHttp\Client(['verify' => false]);
+	$response = $client->request('POST', 'http://'. "localhost" .":". "" . "/". "MITM/docs/new_note_encrypted.php" . "?" . "", [
+		'form_params' => [
+			'data' => $encrypted_data,
+			'test' => 12, //USE FOR PACKET INSPECTION???
+		]
+	]);
+}
 //USE CASE 
 ?>
 
@@ -88,7 +116,7 @@ function display_notes()
 					</form>
 				</div>
 				<div class="row px-5">
-					<form method="post" name="note-form" action="new_note.php" class="note-form" id="note-form">
+					<form method="post" name="note-form" class="note-form" id="note-form">
 						<span id="error-message" style="color: red; display: none">Please fill out this field</span>
 						<div class="form-floating">
 							<textarea class="form-control" id="message" name="message" rows="3" required></textarea>
@@ -101,7 +129,7 @@ function display_notes()
 							<input type="button" onclick="submitLatency()" class="btn btn-success" value="Save and check latency (UC02)">
 						</div>
 						<div class="row my-3">
-							<input type="submit" class="btn btn-info" value="Save with hash (UC05)" formaction="docs/new_note_encrypted_with_hash.php">
+							<input type="submit" name="uc04" class="btn btn-info" value="Save with hash (UC05)">
 						</div>
 					</form>
 					<form method="post" name="note-form-latency" action="docs/new_note_latency.php" class="note-form-latency" id="note-form-latency">

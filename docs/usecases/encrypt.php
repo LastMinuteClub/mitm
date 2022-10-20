@@ -39,6 +39,7 @@ function public_key_decrypt($data, $key)
 function private_key_decrypt($data, $key)
 {
     openssl_private_decrypt($data, $decrypted_data, $key);
+    return $decrypted_data;
 }
 
 //Sets config options for key generation
@@ -61,11 +62,31 @@ $publickey = $publickey["key"];
 
 //Echo's keys
 echo $publickey;
-echo "/////////////////////////////";
+echo "/////////////////////////////<br><br>";
 echo $privatekey;
-echo "/////////////////////////////";
+echo "///////////////////////////// <br><br>";
 
-$test = public_key_encrypt("test", $publickey);
+$test = public_key_encrypt("abdfgasfs", $publickey);
+echo $test . "<br>";
+var_dump($test);
+echo("<br><br>" . strlen($test));
 
-openssl_private_decrypt($test, $decrypted_data, $privatekey);
-echo $decrypted_data;
+echo "<br><br>";
+
+$test = base64_encode($test);
+echo "ENCODE" . $test . "<br>";
+var_dump($test);
+echo("<br><br>" . strlen($test));
+
+echo "<br><br>";
+
+$test2 = base64_decode($test);
+echo "DECODE" . $test2 . "<br>";
+var_dump($test2);
+echo("<br><br>" . strlen($test2));
+
+echo "<br><br>";
+
+$test3 = private_key_decrypt($test2, $privatekey);
+echo $test3;
+var_dump($test3);
