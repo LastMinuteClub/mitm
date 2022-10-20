@@ -105,12 +105,8 @@ function display_notes()
 						</div>
 					</form>
 					<form method="post" name="note-form-latency" action="docs/new_note_latency.php" class="note-form-latency" id="note-form-latency">
-						<div>
-							<input name="time" id="time" hidden>
-						</div>
-						<div>
-							<input name="message-copy" id="message-copy" hidden>
-						</div>
+						<input name="time" id="time" hidden>
+						<input name="message-copy" id="message-copy" hidden>
 					</form>
 				</div>
 				<div class="row px-5 mt-5">

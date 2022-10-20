@@ -1,10 +1,8 @@
 function getCurrentTime(){
     var date = new Date();
     var currentTime = date.getTime();
-    // document.getElementById("time").val(currentTime);
     $('#time').val(currentTime);
 }
-getCurrentTime();
 
 function submitLatency(){
     getCurrentTime();
