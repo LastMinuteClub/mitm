@@ -1,4 +1,6 @@
 <?php
+require 'vendor/autoload.php';
+
 include("docs/database/db_conn.php");
 
 //If there is any received error message 
@@ -10,28 +12,40 @@ if (isset($_GET['error'])) {
 
 function display_notes()
 {
-	global $conn;
-	$query = "SELECT * FROM notes";
-	$result = $conn->query($query);
+	// need to change the ip and port
+	$ip="localhost";
+	$port="8888";
+	$url="MITM/notelist.php";
+	$query="";
 
-	if ($rownum = $result->num_rows >= 1) {
-		while ($row = $result->fetch_assoc()) {
-			$noteID = $row['noteID'];
-			$dateCreated = $row['dateCreated'];
-			$lastEdited = $row['lastEdited'];
-			$message = $row['message'];
+	try {
+	
+		$client = new GuzzleHttp\Client(['verify' => false]);
+		$response = $client->request('GET', 'http://'.$ip.":".$port. "/".$url. "?" . $query);
 
-			echo "
+		//If all right then display the form
+		if ($response->getStatusCode() == 200) {
+			$xml = simplexml_load_string($response->getBody());
+            foreach ($xml->note as $n) {
+               			echo "
 					<div class='row ml-4 pl-4'>
 						<div class='row' style='border:2px solid grey;border-radius:5px'>
-							<h4>" . $dateCreated . "</h4>
+							<h4>" . $n->dateCreated . "</h4>
 						</div>
 						<div class='row'>
-							<p>" . $message . "</p>
+							<p>" . $n->message . "</p>
 						</div>
 					</div>
 				";
+            }
+		} else {
+			echo "Error : " . $response->getStatusCode();
 		}
+	} catch (Exception $e) {
+		echo "Error [RES]: \n";
+		echo "<pre>";
+		print_r($e);
+		echo "</pre>";
 	}
 }
 
