@@ -1,5 +1,7 @@
 <?php
-//WIP
+
+
+//Encrypts data with 256 bit AES encrption
 function encrypt_with_256($data, $server_key)
 {
     $key = openssl_random_pseudo_bytes(128);
@@ -12,24 +14,35 @@ function encrypt_with_256($data, $server_key)
     return $encrypted;
 }
 
+//Encrypts data with public key
 function public_key_encrypt($data, $public_key)
 {
     openssl_public_encrypt($data, $encrypted_data, $public_key);
     return $encrypted_data;
 }
 
+//Encrypts data with private key
 function private_key_encrypt($data, $key)
 {
     openssl_private_encrypt($data, $encrypted_data, $key);
     return $encrypted_data;
 }
 
+//Decrypts data with public key
 function public_key_decrypt($data, $key)
 {
     openssl_public_decrypt($data, $decrypted_data, $key);
     return $decrypted_data;
 }
 
+//Decrypts data with private key
+function private_key_decrypt($data, $key)
+{
+    openssl_private_decrypt($data, $decrypted_data, $key);
+}
+
+//Sets config options for key generation
+//Creates key with SHA256 algorithm @ 2048 bits
 $config = array(
     "config" => "C:/xampp/php/extras/openssl/openssl.cnf",
     'private_key_bits'=> 2048,
@@ -46,6 +59,7 @@ openssl_pkey_export($new_key_pair, $privatekey, NULL, $config);
 $publickey = openssl_pkey_get_details($new_key_pair);
 $publickey = $publickey["key"];
 
+//Echo's keys
 echo $publickey;
 echo "/////////////////////////////";
 echo $privatekey;
