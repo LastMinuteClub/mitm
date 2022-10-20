@@ -14,9 +14,20 @@ function encrypt_with_256($data, $server_key)
 
 function public_key_encrypt($data, $public_key)
 {
-    $encrypted = openssl_public_encrypt($data, $encrypted_data, $public_key);
-    //echo($encrypted_data);
+    openssl_public_encrypt($data, $encrypted_data, $public_key);
     return $encrypted_data;
+}
+
+function private_key_encrypt($data, $key)
+{
+    openssl_private_encrypt($data, $encrypted_data, $key);
+    return $encrypted_data;
+}
+
+function public_key_decrypt($data, $key)
+{
+    openssl_public_decrypt($data, $decrypted_data, $key);
+    return $decrypted_data;
 }
 
 $config = array(
