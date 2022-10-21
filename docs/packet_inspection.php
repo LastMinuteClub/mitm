@@ -2,13 +2,6 @@
 include("database/db_conn.php");
 include("session/session.php");
 
-//Decrypts data with private key
-function private_key_decrypt($data, $key)
-{
-    openssl_private_decrypt($data, $decrypted_data, $key);
-    return $decrypted_data;
-}
-
 if (!isset($_POST['message'])) {
     header("Location: ../homepage.php");
 }

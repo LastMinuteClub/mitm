@@ -1,53 +1,48 @@
 <?php
-    include("database/db_conn.php");
+include("database/db_conn.php");
+include("session/session.php");
 
-    if(!isset($_POST['message-copy']) && !isset($_POST['time'])){
-        header("Location: ../homepage.php");
-    }
+//Hashes message using SHA256 algo
+function hash_message($data)
+{
+    return hash("sha256", $data);
+}
 
-    function private_key_decrypt($data, $privatekey)
-    {
-        //Decrypt using a private key
-        openssl_private_decrypt($data, $decrypted_data, $privatekey);
-        return $decrypted_data; //Returns decrypted data
-    }
-    
-	$message = htmlspecialchars($_POST['message-copy']);
-    
-    $message = private_key_decrypt($message, "ADD PRIV KEY");
-    
-    $timeReceived = intval(microtime(true) * 1000); // 1666237644022
-    $timeSent = $_POST['time'];                     // 1666233312494
-
-    // for cases where miliseconds are friends of 10
-    if(strlen($timeSent) != strlen($timeReceived)){
-        $timeSent *= 10;
-        console_log("added 10");
-    }
-
-    $timeDifference = $timeReceived - $timeSent;
-
-    if($timeDifference > 100){
-        header("Location: ../homepage.php?error=Warning! MITM detected: Too long to receive");
+//Compares the hashes of a piece of data and a hash
+//True == Same, False == !Same
+function compare_hash($hash, $data)
+{
+    if (hash_message($data) == $hash) {
+        return true;
     } else {
-        $query = "INSERT INTO notes (message) VALUES ('$message')";
-        $result = $conn->query($query);
-        
-        console_log("Result: ".$result);
-
-        header("Location: ../homepage.php");
+        return false;
     }
+}
 
-    console_log($timeDifference);
-    
-	mysqli_close($conn);
+//Decrypts data with private key
+function private_key_decrypt($data, $key)
+{
+    openssl_private_decrypt($data, $decrypted_data, $key);
+    return $decrypted_data;
+}
 
-    // Console function
-    function console_log($output, $with_script_tags = true) {
-        $js_code = 'console.log('.json_encode($output, JSON_HEX_TAG).');';
-        if ($with_script_tags) {
-            $js_code = '<script>' . $js_code . '</script>';
-        }
-        echo $js_code;
-    }
+$message = $_POST['data'];
+$hash = $_POST['hash'];
+$secure = $_POST['secure'];
+
+$message = base64_decode($message);
+$message = private_key_decrypt($message, $server_priv_key);
+
+if (compare_hash($hash, $message) && (substr($message, -1) == $secure)) {
+    $query = "INSERT INTO notes (message) VALUES ('$message')";
+    $result = $conn->query($query);
+    mysqli_close($conn);
+} else {
+    header("Location: ../homepage.php?error=Warning! MITM detected: Hash Didn't Match");
+    $query = "INSERT INTO notes (message, hash_sha256) VALUES ('FAILED', 'FAILED')";
+    $result = $conn->query($query);
+}
+
+mysqli_close($conn);
+header("Location: ../homepage.php");
 ?>

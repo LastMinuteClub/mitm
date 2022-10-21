@@ -96,7 +96,6 @@ if(isset($_POST['uc04']))
 if(isset($_POST['uc05']))
 {
 	$data = htmlspecialchars($_POST['message']);
-	$hashed = hash_message($data);
 	$letter = substr($data, -1);
 	$key = $server_pub_key;
 	$encrypted_data = public_key_encrypt($data, $key);
@@ -105,8 +104,26 @@ if(isset($_POST['uc05']))
 	$response = $client->request('POST', 'http://'. "localhost" .":". "" . "/". "MITM/docs/new_note_encrypted_with_hash.php" . "?" . "", [
 		'form_params' => [
 			'data' => $encrypted_data,
+			'secure' => $letter,
+		]
+	]);
+	unset($_POST['uc05']);
+	header("Location: homepage.php");
+}
+if(isset($_POST['uc06']))
+{
+	$data = htmlspecialchars($_POST['message']);
+	$hashed = hash_message($data);
+	$letter = substr($data, -1);
+	$key = $server_pub_key;
+	$encrypted_data = public_key_encrypt($data, $key);
+	$encrypted_data = base64_encode($encrypted_data);
+	$client = new GuzzleHttp\Client(['verify' => false]);
+	$response = $client->request('POST', 'http://'. "localhost" .":". "" . "/". "MITM/docs/new_note_all_use_cases.php" . "?" . "", [
+		'form_params' => [
+			'data' => $encrypted_data,
 			'hash' => $hashed,
-			'secure' => $letter, //USE FOR PACKET INSPECTION???
+			'secure' => $letter,
 		]
 	]);
 	unset($_POST['uc05']);
@@ -293,6 +310,9 @@ if(isset($_POST['uc05']))
 						</div>
 						<div class="row my-3">
 							<input type="submit" name="uc05" class="btn btn-info" value="Save with encryption and hash checking (UC05)">
+						</div>
+						<div class="row my-3">
+							<input type="submit" name="uc06" class="btn btn-info" value="All use cases combined">
 						</div>
 					</form>
 					<form method="post" name="note-form-latency" action="docs/new_note_latency.php" class="note-form-latency" id="note-form-latency">
