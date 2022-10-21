@@ -122,7 +122,7 @@ if (isset($_POST['uc06'])) {
 			'secure' => $letter,
 		]
 	]);
-	unset($_POST['uc05']);
+	unset($_POST['uc06']);
 	header("Location: homepage.php");
 }
 ?>
@@ -278,8 +278,73 @@ if (isset($_POST['uc06'])) {
 							console.log("Error: " + err.message);
 						});
 
-					return false;
-				});
+				var encodemsg = "";
+				//This generates our secret Key with key generation algorithm
+				window.crypto.subtle
+					.generateKey(algoKeyGen, false, keyUsages)
+					.then(function(key) {
+						secretKey = key;
+						//Encrypt plaintext with key and algorithm converting the plaintext to ArrayBuffer
+						return window.crypto.subtle.encrypt(
+							algoEncrypt,
+							key,
+							strToArrayBuffer(plainText)
+						);
+					})
+					.then(function(cipherText) {
+						//print out Ciphertext in console
+						encodemsg = arrayBufferToString(cipherText)
+
+						console.log("Cipher Text: " + encodemsg);
+						console.log(cipherText);
+
+						hash(plainText).then(function(hex) {
+								console.log(hex)
+
+								console.log(hex);
+								console.log("digest");
+								var postForm = { //Fetch form data
+									'message': encodemsg, //Store name fields value
+									'origin': plainText,
+									'hash': hex
+
+								};
+
+								$.ajax({
+									type: "POST",
+									url: "newnotetest.php",
+									data: postForm,
+									success: function(response) {
+										console.log(response);
+										console.log("hah");
+										// header("Location: homepage.php");
+
+									},
+									error: function(jqXHR, textStatus, errorThrown) {
+										console.log(textStatus, errorThrown);
+
+										console.log("vvvv");
+										alert(errorThrown);
+									}
+								});
+
+							}
+
+						);
+
+
+						return window.crypto.subtle.decrypt(algoEncrypt, secretKey, cipherText);
+					})
+					.then(function(plainText) {
+						console.log("Plain Text: " + arrayBufferToString(plainText));
+					})
+					.catch(function(err) {
+						console.log("Error: " + err.message);
+					});
+
+
+				// return false;
+				<?php header("Location: homepage.php");?>
 			});
 		}
 
