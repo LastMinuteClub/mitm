@@ -175,7 +175,7 @@ if (isset($_POST['uc06'])) {
 		//This will generate random values of 8-bit unsigned integer
 		var iv = "";
 
-		function() encrypt_with_js {
+		function encrypt_with_js() {
 
 			if (localStorage.getItem('key') == "yes") {
 				iv = strToArrayBuffer(localStorage.getItem('iv'));
