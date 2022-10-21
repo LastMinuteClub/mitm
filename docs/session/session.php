@@ -45,7 +45,7 @@ if(!isset($_SESSION['session_user']))
 // 	$_SESSION['server_priv_key'] = $keys[0];
 // 	$_SESSION['server_pub_key'] = $keys[1];
 // }
-//$keys = generate_keys();
+// $keys = generate_keys();
 $server_priv_key = "-----BEGIN PRIVATE KEY-----
 MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDFWOU5CP6E8V9q
 0GInZUWByui6D5XQoaKP0QxEuhK6H+81l23r+/uE0X8YytT6fRQmfrqaykdwylPv

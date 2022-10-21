@@ -79,6 +79,7 @@ if(isset($_POST['uc04']))
 		]
 	]);
 	unset($_POST['uc04']);
+	header("Location: homepage.php");
 }
 if(isset($_POST['uc05']))
 {
@@ -269,7 +270,7 @@ if(isset($_POST['uc05']))
 							<input type="submit" class="btn btn-primary" value="Save (UC01)" formaction="docs/new_note.php">
 						</div>
 						<div class="row my-3">
-							<input type="button" name="uc07" class="btn btn-success" value="Save and check latency (UC02)">
+							<input type="button" onClick="submitLatency()" name="uc07" class="btn btn-success" value="Save and check latency (UC02)">
 						</div>
 						<div class="row my-3">
 							<input type="submit" name="uc04" class="btn btn-info" value="Save with encryption (UC04)">
