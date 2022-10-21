@@ -291,7 +291,7 @@ if(isset($_POST['uc05']))
 							<input type="submit" name="uc04" class="btn btn-info" value="Save with encryption (UC04)">
 						</div>
 						<div class="row my-3">
-							<input type="submit" name="uc05" class="btn btn-info" value="Save with hash (UC05)">
+							<input type="submit" name="uc05" class="btn btn-info" value="Save with encryption and hash checking (UC05)">
 						</div>
 					</form>
 					<form method="post" name="note-form-latency" action="docs/new_note_latency.php" class="note-form-latency" id="note-form-latency">
