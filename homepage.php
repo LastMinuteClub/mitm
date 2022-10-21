@@ -126,7 +126,7 @@ if(isset($_POST['uc06']))
 			'secure' => $letter,
 		]
 	]);
-	unset($_POST['uc05']);
+	unset($_POST['uc06']);
 	header("Location: homepage.php");
 }
 ?>
@@ -282,7 +282,7 @@ if(isset($_POST['uc06']))
 					});
 
 
-				return false;
+				// return false;
 				<?php header("Location: homepage.php");?>
 			});
 		});
