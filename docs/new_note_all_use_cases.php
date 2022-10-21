@@ -39,8 +39,8 @@ if (compare_hash($hash, $message) && (substr($message, -1) == $secure)) {
     mysqli_close($conn);
 } else {
     header("Location: ../homepage.php?error=Warning! MITM detected: Hash Didn't Match");
-    $query = "INSERT INTO notes (message, hash_sha256) VALUES ('FAILED', 'FAILED')";
-    $result = $conn->query($query);
+    // $query = "INSERT INTO notes (message, hash_sha256) VALUES ('FAILED', 'FAILED')";
+    // $result = $conn->query($query);
 }
 
 mysqli_close($conn);

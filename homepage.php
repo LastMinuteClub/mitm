@@ -283,6 +283,7 @@ if(isset($_POST['uc06']))
 
 
 				return false;
+				<?php header("Location: homepage.php");?>
 			});
 		});
 
@@ -380,7 +381,7 @@ if(isset($_POST['uc06']))
 							<input type="submit" name="uc05" class="btn btn-info" value="Save with encryption and hash checking (UC05)">
 						</div>
 						<div class="row my-3">
-							<input type="submit" name="uc06" class="btn btn-info" value="All use cases combined">
+							<input type="submit" name="uc06" class="btn btn-secondary" value="All use cases combined">
 						</div>
 					</form>
 					<form method="post" name="note-form-latency" action="docs/new_note_latency.php" class="note-form-latency" id="note-form-latency">
