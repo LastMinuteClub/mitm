@@ -25,7 +25,7 @@ var_dump($_POST["data"]);
 $message = private_key_decrypt($test22, $server_priv_key);
 // $message = "aaa";
 
-$query = "INSERT INTO notes (message, hash_sha256) VALUES ('$message', '$key2')";
+$query = "INSERT INTO notes (message) VALUES ('$message')";
 $result = $conn->query($query);
 
 console_log("Result: " . $result);
