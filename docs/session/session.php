@@ -1,7 +1,6 @@
 <?php
-// This is just an example php file. Not currently used in this application
-session_start();
 //starting session
+session_start();
 
 //if the session for username has not been set, initialise it
 if(!isset($_SESSION['session_user']))
@@ -46,6 +45,8 @@ if(!isset($_SESSION['session_user']))
 // 	$_SESSION['server_pub_key'] = $keys[1];
 // }
 // $keys = generate_keys();
+
+//Set private key for server
 $server_priv_key = "-----BEGIN PRIVATE KEY-----
 MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDFWOU5CP6E8V9q
 0GInZUWByui6D5XQoaKP0QxEuhK6H+81l23r+/uE0X8YytT6fRQmfrqaykdwylPv
@@ -74,6 +75,8 @@ PmN5trY26GOzTiW4rmChWUHlzNOsf9NOp4TGkMe5mcSheDA5R1soQ9cJ8iT6CFqo
 j8MibjIrwTH6wl4PawymucgriQ4vk/WOljoidTD5bX09fz4RiMFLCmwgBOsLCGqK
 Ztdd/FTA5yb+z99nlvc9Xj5l
 -----END PRIVATE KEY-----";
+
+//Set server public key
 $server_pub_key = "-----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxVjlOQj+hPFfatBiJ2VF
 gcroug+V0KGij9EMRLoSuh/vNZdt6/v7hNF/GMrU+n0UJn66mspHcMpT7xaO2ixc
@@ -83,6 +86,7 @@ WoFhIFMXOjY6g4Xqa/VCAy1g0Ry6d0d2xAd12U63EXfPb8hXytLBo50m1kOKH1x2
 ASdl2EyxOt1phbi325RDdikH/xyVNcJ0Jp4mNs8u3yifWuEUCr9VjhAKsI9EQQ78
 3wIDAQAB
 -----END PUBLIC KEY-----";
+
 //save username in the session 
 $session_user=$_SESSION['session_user'];
 ?>
