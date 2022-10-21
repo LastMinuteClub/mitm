@@ -64,10 +64,23 @@ function hash_message($data)
     return hash("sha256", $data);
 }
 
-if(isset($_POST['uc04']))
+if(isset($_POST['uc03']))
 {
 	$data = htmlspecialchars($_POST['message']);
 	$letter = substr($data, -1);
+	$client = new GuzzleHttp\Client(['verify' => false]);
+	$response = $client->request('POST', 'http://'. "localhost" .":". "" . "/". "MITM/docs/packet_inspection.php" . "?" . "", [
+		'form_params' => [
+			'data' => $data,
+			'secure' => $letter,
+		]
+	]);
+	unset($_POST['uc04']);
+	header("Location: homepage.php");
+}
+if(isset($_POST['uc04']))
+{
+	$data = htmlspecialchars($_POST['message']);
 	$key = $server_pub_key;
 	$encrypted_data = public_key_encrypt($data, $key);
 	$encrypted_data = base64_encode($encrypted_data);
@@ -75,7 +88,6 @@ if(isset($_POST['uc04']))
 	$response = $client->request('POST', 'http://'. "localhost" .":". "" . "/". "MITM/docs/new_note_encrypted.php" . "?" . "", [
 		'form_params' => [
 			'data' => $encrypted_data,
-			'secure' => $letter, //USE FOR PACKET INSPECTION???
 		]
 	]);
 	unset($_POST['uc04']);
@@ -85,7 +97,7 @@ if(isset($_POST['uc05']))
 {
 	$data = htmlspecialchars($_POST['message']);
 	$hashed = hash_message($data);
-	$letter = substr($data, -1);;
+	$letter = substr($data, -1);
 	$key = $server_pub_key;
 	$encrypted_data = public_key_encrypt($data, $key);
 	$encrypted_data = base64_encode($encrypted_data);
@@ -272,6 +284,9 @@ if(isset($_POST['uc05']))
 						</div>
 						<div class="row my-3">
 							<input type="button" onClick="submitLatency()" name="uc07" class="btn btn-success" value="Save and check latency (UC02)">
+						</div>
+						<div class="row my-3">
+							<input type="submit" name="uc03" class="btn btn-info" value="Save with packet inspection (UC03)">
 						</div>
 						<div class="row my-3">
 							<input type="submit" name="uc04" class="btn btn-info" value="Save with encryption (UC04)">
