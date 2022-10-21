@@ -286,10 +286,10 @@ if(isset($_POST['uc05']))
 							<input type="button" onClick="submitLatency()" name="uc07" class="btn btn-success" value="Save and check latency (UC02)">
 						</div>
 						<div class="row my-3">
-							<input type="submit" name="uc03" class="btn btn-info" value="Save with packet inspection (UC03)">
+							<input type="submit" name="uc03" class="btn btn-danger" value="Save with packet inspection (UC03)">
 						</div>
 						<div class="row my-3">
-							<input type="submit" name="uc04" class="btn btn-info" value="Save with encryption (UC04)">
+							<input type="submit" name="uc04" class="btn btn-warning" value="Save with encryption (UC04)">
 						</div>
 						<div class="row my-3">
 							<input type="submit" name="uc05" class="btn btn-info" value="Save with encryption and hash checking (UC05)">
