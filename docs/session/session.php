@@ -10,34 +10,34 @@ if(!isset($_SESSION['session_user']))
 		$_SESSION['access_lvl'] = 0;
 }
 
-function generate_keys()
-{
-    //Config options for key generation
-    //Creates key with SHA256 @ 2048 bits
-    $config = array(
-        "config" => "C:/xampp/php/extras/openssl/openssl.cnf",
-        'private_key_bits' => 2048,
-        'default_md' => "sha256",
-    );
-    //GENERATE NEW KEYPAIR
-    $new_key_pair = openssl_pkey_new($config);
+// function generate_keys()
+// {
+//     //Config options for key generation
+//     //Creates key with SHA256 @ 2048 bits
+//     $config = array(
+//         "config" => "C:/xampp/php/extras/openssl/openssl.cnf",
+//         'private_key_bits' => 2048,
+//         'default_md' => "sha256",
+//     );
+//     //GENERATE NEW KEYPAIR
+//     $new_key_pair = openssl_pkey_new($config);
 
-    //PRIVATE KEY
-    openssl_pkey_export($new_key_pair, $privatekey, NULL, $config);
+//     //PRIVATE KEY
+//     openssl_pkey_export($new_key_pair, $privatekey, NULL, $config);
 
-    //PUBLIC KEY
-    $publickey = openssl_pkey_get_details($new_key_pair);
-    $publickey = $publickey["key"]; //Get public key from keypair
+//     //PUBLIC KEY
+//     $publickey = openssl_pkey_get_details($new_key_pair);
+//     $publickey = $publickey["key"]; //Get public key from keypair
 
-    //Echo keys
-    // echo $publickey;
-    // echo "/////////////////////////////";
-    // echo $privatekey;
-    // echo "/////////////////////////////";
+//     //Echo keys
+//     // echo $publickey;
+//     // echo "/////////////////////////////";
+//     // echo $privatekey;
+//     // echo "/////////////////////////////";
 
-    //Return Array
-    return array($privatekey, $publickey);
-}
+//     //Return Array
+//     return array($privatekey, $publickey);
+// }
 
 // if(!isset($_SESSION['server_priv_key']) && !isset($_SESSION['server_pub_key']))
 // {
@@ -45,7 +45,7 @@ function generate_keys()
 // 	$_SESSION['server_priv_key'] = $keys[0];
 // 	$_SESSION['server_pub_key'] = $keys[1];
 // }
-$keys = generate_keys();
+//$keys = generate_keys();
 $server_priv_key = "-----BEGIN PRIVATE KEY-----
 MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDFWOU5CP6E8V9q
 0GInZUWByui6D5XQoaKP0QxEuhK6H+81l23r+/uE0X8YytT6fRQmfrqaykdwylPv
