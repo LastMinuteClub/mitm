@@ -1,19 +1,18 @@
 <?php
     include("database/db_conn.php");
 
-	$message = htmlspecialchars($_POST['message']);
+	$message = htmlspecialchars($_POST['message']); //Get message
 
+    //Checks message exists, if not redirects to home page
     if(!isset($_POST['message'])){
         header("Location: ../homepage.php");
     }
     
     $query = "INSERT INTO notes (message) VALUES ('$message')";
-	$result = $conn->query($query);
-	
-    console_log("Result: ".$result);
+	$result = $conn->query($query); //Insert message into DB
 
-	header("Location: ../homepage.php");
-	mysqli_close($conn);
+	mysqli_close($conn); //Close connection to DB
+	header("Location: ../homepage.php"); //Redirects to homepage
 
     // Console function
     function console_log($output, $with_script_tags = true) {

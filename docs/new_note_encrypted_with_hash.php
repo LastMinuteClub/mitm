@@ -26,22 +26,20 @@ function private_key_decrypt($data, $key)
     return $decrypted_data;
 }
 
-$message = $_POST['data'];
-$hash = $_POST['hash'];
+$message = $_POST['data']; //Get encrypted message
+$hash = $_POST['hash']; //Get hash of message
 
-$message = base64_decode($message);
-$message = private_key_decrypt($message, $server_priv_key);
+$message = base64_decode($message); //Decode encrypted data
+$message = private_key_decrypt($message, $server_priv_key); //Decrypt message
 
-if (compare_hash($hash, $message)) {
+if (compare_hash($hash, $message)) { //Make sure original hash matches hash of unencrypted message
     $query = "INSERT INTO notes (message) VALUES ('$message')";
-    $result = $conn->query($query);
-    mysqli_close($conn);
+    $result = $conn->query($query); //Insert message into DB
+    mysqli_close($conn); //Close connection to DB
 } else {
-    header("Location: ../homepage.php?error=Warning! MITM detected: Hash Didn't Match");
-    // $query = "INSERT INTO notes (message, hash_sha256) VALUES ('FAILED', 'FAILED')";
-    // $result = $conn->query($query);
+    header("Location: ../homepage.php?error=Warning! MITM detected: Hash Didn't Match"); //Display error
 }
 
-mysqli_close($conn);
-header("Location: ../homepage.php");
+mysqli_close($conn); //Close connection to DB
+header("Location: ../homepage.php"); //Redirect to homepage
 ?>

@@ -59,71 +59,72 @@ function public_key_encrypt($data, $public_key)
 	return $encrypted_data;
 }
 
+//Hashes message using SHA256 algo
 function hash_message($data)
 {
 	return hash("sha256", $data);
 }
 
-if (isset($_POST['uc03'])) {
-	$data = htmlspecialchars($_POST['message']);
-	$letter = substr($data, -1);
+if (isset($_POST['uc03'])) { //Detects when button it pressed
+	$data = htmlspecialchars($_POST['message']); //Get message
+	$letter = substr($data, -1); //Get last letter
 	$client = new GuzzleHttp\Client(['verify' => false]);
-	$response = $client->request('POST', 'http://' . "localhost" . ":" . "" . "/" . "MITM/docs/packet_inspection.php" . "?" . "", [
-		'form_params' => [
+	$response = $client->request('POST', 'http://' . "localhost" . ":" . "" . "/" . "MITM/docs/packet_inspection.php" . "?" . "", [ //Send request to backend with
+		'form_params' => [																											//required data
 			'data' => $data,
 			'secure' => $letter,
 		]
 	]);
-	unset($_POST['uc04']);
-	header("Location: homepage.php");
+	unset($_POST['uc04']); //Unset button variable
+	header("Location: homepage.php"); //Redirect to homepage
 }
-if (isset($_POST['uc04'])) {
-	$data = htmlspecialchars($_POST['message']);
-	$key = $server_pub_key;
-	$encrypted_data = public_key_encrypt($data, $key);
-	$encrypted_data = base64_encode($encrypted_data);
+if (isset($_POST['uc04'])) { //Detects when button it pressed
+	$data = htmlspecialchars($_POST['message']); //Get message
+	$key = $server_pub_key; //Get public key of server
+	$encrypted_data = public_key_encrypt($data, $key); //Encrypt message
+	$encrypted_data = base64_encode($encrypted_data); //Encode encrypted message in base64
 	$client = new GuzzleHttp\Client(['verify' => false]);
 	$response = $client->request('POST', 'http://' . "localhost" . ":" . "" . "/" . "MITM/docs/new_note_encrypted.php" . "?" . "", [
-		'form_params' => [
+		'form_params' => [						//Send request to backend with required data
 			'data' => $encrypted_data,
 		]
 	]);
-	unset($_POST['uc04']);
-	header("Location: homepage.php");
+	unset($_POST['uc04']); //Unset button variable
+	header("Location: homepage.php"); //Redirect to homepage
 }
-if (isset($_POST['uc05'])) {
-	$data = htmlspecialchars($_POST['message']);
-	$hashed = hash_message($data);
-	$key = $server_pub_key;
-	$encrypted_data = public_key_encrypt($data, $key);
-	$encrypted_data = base64_encode($encrypted_data);
+if (isset($_POST['uc05'])) { //Detects when button it pressed
+	$data = htmlspecialchars($_POST['message']); //Get message
+	$hashed = hash_message($data); //Get hash of message
+	$key = $server_pub_key; //Get public key of server
+	$encrypted_data = public_key_encrypt($data, $key); //Encrypt message
+	$encrypted_data = base64_encode($encrypted_data); //Encode encrypted message in base64
 	$client = new GuzzleHttp\Client(['verify' => false]);
 	$response = $client->request('POST', 'http://' . "localhost" . ":" . "" . "/" . "MITM/docs/new_note_encrypted_with_hash.php" . "?" . "", [
-		'form_params' => [
+		'form_params' => [ 						//Send request to backend with required data
 			'data' => $encrypted_data,
 			'hash' => $hashed,
 		]
 	]);
-	unset($_POST['uc05']);
-	header("Location: homepage.php");
+	unset($_POST['uc05']); //Unset button variable
+	header("Location: homepage.php"); //Redirect to homepage
 }
-if (isset($_POST['uc06'])) {
-	$data = htmlspecialchars($_POST['message']);
-	$hashed = hash_message($data);
-	$letter = substr($data, -1);
-	$key = $server_pub_key;
-	$encrypted_data = public_key_encrypt($data, $key);
-	$encrypted_data = base64_encode($encrypted_data);
+if (isset($_POST['uc06'])) { //Detects when button it pressed
+	$data = htmlspecialchars($_POST['message']); //Get message
+	$hashed = hash_message($data); //Get hash of message
+	$letter = substr($data, -1); //Get last letter
+	$key = $server_pub_key; //Get public key of server
+	$encrypted_data = public_key_encrypt($data, $key); //Encrypt message
+	$encrypted_data = base64_encode($encrypted_data); //Encode encrypted message in base64
 	$client = new GuzzleHttp\Client(['verify' => false]);
 	$response = $client->request('POST', 'http://' . "localhost" . ":" . "" . "/" . "MITM/docs/new_note_all_use_cases.php" . "?" . "", [
-		'form_params' => [
+		'form_params' => [						//Send request to backend with required data
 			'data' => $encrypted_data,
 			'hash' => $hashed,
 			'secure' => $letter,
 		]
 	]);
-	unset($_POST['uc06']);
-	header("Location: homepage.php");
+	unset($_POST['uc06']); //Unset button variable
+	header("Location: homepage.php"); //Redirect to homepage
 }
 ?>
 
