@@ -313,7 +313,7 @@ if (isset($_POST['uc06'])) { //Detects when button it pressed
 
 											$.ajax({
 												type: "POST",
-												url: "newnotetest.php",
+												url: "docs/newnotetest.php",
 												data: postForm,
 												success: function(response) {
 													console.log(response);
