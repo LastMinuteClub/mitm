@@ -41,7 +41,7 @@ function display_notes()
 							<h4>" . $n->dateCreated . "</h4>
 						</div>
 						<div class='row'>
-							<p>" . $n->message . "</p>
+							<p><script> decrypt('" . $n->message . "'); </script></p>
 						</div>
 					</div>
 				";
@@ -99,6 +99,138 @@ if(isset($_POST['uc04']))
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<!-- Icon library -->
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+	
+		<script type=text/javascript>
+		//This will generate random values of 8-bit unsigned integer
+		var iv = window.crypto.getRandomValues(new Uint8Array(12));
+
+		//This object will generate our encryption algorithm
+		var algoEncrypt = {
+			name: "AES-GCM",
+			iv: iv,
+			tagLength: 128,
+		};
+		$(document).ready(function() {
+			$("form#note-form").submit(function() {
+				// we want to store the values from the form input box, then send via ajax below  
+				var plainText = $('#message').val();
+
+
+				//This object below will generate our algorithm key
+				var algoKeyGen = {
+					name: "AES-GCM",
+					length: 256,
+				};
+
+
+				//states that key usage is for encryption
+				var keyUsages = ["encrypt"];
+				// var plainText = "This is a secure message from Mary";
+				var secretKey;
+
+				var encodemsg = "";
+				//This generates our secret Key with key generation algorithm
+				window.crypto.subtle
+					.generateKey(algoKeyGen, false, keyUsages)
+					.then(function(key) {
+						secretKey = key;
+						//Encrypt plaintext with key and algorithm converting the plaintext to ArrayBuffer
+						return window.crypto.subtle.encrypt(
+							algoEncrypt,
+							key,
+							strToArrayBuffer(plainText)
+						);
+					})
+					.then(function(cipherText) {
+						//print out Ciphertext in console
+						encodemsg = arrayBufferToString(cipherText)
+						console.log("Cipher Text: " + encodemsg);
+						console.log(cipherText);
+
+						var postForm = { //Fetch form data
+							'message': encodemsg //Store name fields value
+						};
+						$.ajax({
+							type: "POST",
+							url: "newnotetest.php",
+							data: postForm,
+							success: function(response) {
+								console.log(response);
+								console.log("hah");
+								// header("Location: homepage.php");
+
+							},
+							error: function(jqXHR, textStatus, errorThrown) {
+								console.log(textStatus, errorThrown);
+								console.log("vvvv");
+							}
+						});
+					})
+					.catch(function(err) {
+						console.log("Error: " + err.message);
+					});
+
+
+				return false;
+			});
+		});
+
+
+
+
+
+		//Syntax for encrypt function
+		// const result = crypto.subtle.encrypt(algorithm, key, data);
+		// const secure = window.crypto.getRandomValues(new Uint8Array(10));
+		// console.log(secure);
+
+
+		/*The function strToArrayBuffer converts string to fixed-length raw binary data buffer because 
+		encrypt method must return a Promise that fulfills with an ArrayBuffer containing the "ciphertext"*/
+		function strToArrayBuffer(str) {
+			var buf = new ArrayBuffer(str.length * 2);
+			var bufView = new Uint16Array(buf);
+			for (var i = 0, strLen = str.length; i < strLen; i++) {
+				bufView[i] = str.charCodeAt(i);
+			}
+			return buf;
+		}
+		//The function arrayBufferToString converts fixed-length raw binary data buffer to 16-bit unsigned String as our plaintext
+		function arrayBufferToString(buf) {
+			return String.fromCharCode.apply(null, new Uint16Array(buf));
+		}
+
+		function decrypt(cipherText) {
+			//This states that the keyusage for decrypting
+			var keyUsages = ["decrypt"];
+			//This object below is for algorithm key generation
+			var algoKeyGen = {
+				name: "AES-GCM",
+				length: 256,
+			};
+			var plainText = "This is a secure message from Mary";
+			var secretKey;
+			//This will generate secrete key with algorithm key and keyusage
+			window.crypto.subtle
+				.generateKey(algoKeyGen, false, keyUsages)
+				.then(function(key) {
+					secretKey = key;
+					console.log(cipherText);
+					//This will decrypt Cipheretext to plaintext
+					return window.crypto.subtle.decrypt(algoEncrypt, secretKey, strToArrayBuffer(cipherText));
+				})
+				//  Print plaintext in console.
+				.then(function(plainText) {
+				
+					console.log("Plain Text: " + arrayBufferToString(plainText));
+					return plainText;
+				})
+				.catch(function(err) {
+					console.log("Error: " + err.message);
+				});
+		}
+	</script>
+	
 	</head>
 	
 	<body>
