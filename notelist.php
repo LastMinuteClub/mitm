@@ -3,20 +3,20 @@
   header('Content-type: text/xml');
   $res = "<root>";
 
-  include_once("docs/database/db_conn.php");
-  $notes = array();
-	$query = "SELECT * FROM notes";
-	$result = $conn->query($query);
+  include_once("docs/database/db_conn.php"); //Get database connection
+  $notes = array(); //Create array
+	$query = "SELECT * FROM notes"; //Query for database
+	$result = $conn->query($query); //Get notes from database
 
 
-		while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+		while ($row = $result->fetch_array(MYSQLI_ASSOC)) { //Loop through notes from database
 			$noteID = $row['noteID'];
-			$dateCreated = $row['dateCreated'];
+			$dateCreated = $row['dateCreated']; //Assign database variables to php variables
 			$lastEdited = $row['lastEdited'];
 			$message = $row['message'];
 
        
-
+          //Form html element with variables
           $res .= " <note>
           <noteid>" . $noteID . "
           </noteid>
@@ -32,8 +32,8 @@
 
 
   
-  $res .= "</root>";
-  echo $res;
+  $res .= "</root>"; //Add to end of html element
+  echo $res; //Echo element result
 
 ?>
 

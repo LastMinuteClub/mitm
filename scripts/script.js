@@ -1,10 +1,10 @@
-function getCurrentTime(){
+function getCurrentTime(){ //Gets current time of user
     var date = new Date();
     var currentTime = date.getTime();
     $('#time').val(currentTime);
 }
 
-function submitLatency(){
+function submitLatency(){ //
     getCurrentTime();
     var message = $('#message').val();
 
