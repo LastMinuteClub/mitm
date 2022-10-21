@@ -1,5 +1,5 @@
 <?php
-session_start();
+//include("../session/session.php");
 
 function generate_keys()
 {
@@ -33,4 +33,5 @@ function generate_keys()
 $keys = generate_keys();
 $_SESSION['server_priv_key'] = $keys[0];
 $_SESSION['server_pub_key'] = $keys[1];
+$testing = "GSGSGFFS";
 ?>
