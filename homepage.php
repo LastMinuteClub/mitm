@@ -197,202 +197,203 @@ if (isset($_POST['uc06'])) {
 			console.log(iv);
 			var cyper;
 			$(document).ready(function() {
-				$("form#note-form").submit(function() {
-					// we want to store the values from the form input box, then send via ajax below  
-					var plainText = $('#message').val();
+						$("form#note-form").submit(function() {
+							// we want to store the values from the form input box, then send via ajax below  
+							var plainText = $('#message').val();
 
 
-					//This object below will generate our algorithm key
-					var algoKeyGen = {
-						name: "AES-GCM",
-						length: 256,
-					};
+							//This object below will generate our algorithm key
+							var algoKeyGen = {
+								name: "AES-GCM",
+								length: 256,
+							};
 
 
-					//states that key usage is for encryption
-					var keyUsages = ["encrypt", "decrypt"];
-					// var plainText = "This is a secure message from Mary";
-					var secretKey;
+							//states that key usage is for encryption
+							var keyUsages = ["encrypt", "decrypt"];
+							// var plainText = "This is a secure message from Mary";
+							var secretKey;
 
-					var encodemsg = "";
-					//This generates our secret Key with key generation algorithm
-					window.crypto.subtle
-						.generateKey(algoKeyGen, false, keyUsages)
-						.then(function(key) {
-							secretKey = key;
-							//Encrypt plaintext with key and algorithm converting the plaintext to ArrayBuffer
-							return window.crypto.subtle.encrypt(
-								algoEncrypt,
-								key,
-								strToArrayBuffer(plainText)
-							);
-						})
-						.then(function(cipherText) {
-							//print out Ciphertext in console
-							encodemsg = arrayBufferToString(cipherText)
+							var encodemsg = "";
+							//This generates our secret Key with key generation algorithm
+							window.crypto.subtle
+								.generateKey(algoKeyGen, false, keyUsages)
+								.then(function(key) {
+									secretKey = key;
+									//Encrypt plaintext with key and algorithm converting the plaintext to ArrayBuffer
+									return window.crypto.subtle.encrypt(
+										algoEncrypt,
+										key,
+										strToArrayBuffer(plainText)
+									);
+								})
+								.then(function(cipherText) {
+									//print out Ciphertext in console
+									encodemsg = arrayBufferToString(cipherText)
 
-							console.log("Cipher Text: " + encodemsg);
-							console.log(cipherText);
+									console.log("Cipher Text: " + encodemsg);
+									console.log(cipherText);
 
-							hash(plainText).then(function(hex) {
-									console.log(hex)
+									hash(plainText).then(function(hex) {
+											console.log(hex)
 
-									console.log(hex);
-									console.log("digest");
-									var postForm = { //Fetch form data
-										'message': encodemsg, //Store name fields value
-										'origin': plainText,
-										'hash': hex
+											console.log(hex);
+											console.log("digest");
+											var postForm = { //Fetch form data
+												'message': encodemsg, //Store name fields value
+												'origin': plainText,
+												'hash': hex
 
-									};
+											};
 
-									$.ajax({
-										type: "POST",
-										url: "newnotetest.php",
-										data: postForm,
-										success: function(response) {
-											console.log(response);
-											console.log("hah");
-											// header("Location: homepage.php");
+											$.ajax({
+												type: "POST",
+												url: "newnotetest.php",
+												data: postForm,
+												success: function(response) {
+													console.log(response);
+													console.log("hah");
+													// header("Location: homepage.php");
 
-										},
-										error: function(jqXHR, textStatus, errorThrown) {
-											console.log(textStatus, errorThrown);
+												},
+												error: function(jqXHR, textStatus, errorThrown) {
+													console.log(textStatus, errorThrown);
 
-											console.log("vvvv");
-											alert(errorThrown);
+													console.log("vvvv");
+													alert(errorThrown);
+												}
+											});
+
 										}
-									});
 
-								}
-
-							);
+									);
 
 
-							return window.crypto.subtle.decrypt(algoEncrypt, secretKey, cipherText);
-						})
-						.then(function(plainText) {
-							console.log("Plain Text: " + arrayBufferToString(plainText));
-						})
-						.catch(function(err) {
-							console.log("Error: " + err.message);
-						});
-
-				var encodemsg = "";
-				//This generates our secret Key with key generation algorithm
-				window.crypto.subtle
-					.generateKey(algoKeyGen, false, keyUsages)
-					.then(function(key) {
-						secretKey = key;
-						//Encrypt plaintext with key and algorithm converting the plaintext to ArrayBuffer
-						return window.crypto.subtle.encrypt(
-							algoEncrypt,
-							key,
-							strToArrayBuffer(plainText)
-						);
-					})
-					.then(function(cipherText) {
-						//print out Ciphertext in console
-						encodemsg = arrayBufferToString(cipherText)
-
-						console.log("Cipher Text: " + encodemsg);
-						console.log(cipherText);
-
-						hash(plainText).then(function(hex) {
-								console.log(hex)
-
-								console.log(hex);
-								console.log("digest");
-								var postForm = { //Fetch form data
-									'message': encodemsg, //Store name fields value
-									'origin': plainText,
-									'hash': hex
-
-								};
-
-								$.ajax({
-									type: "POST",
-									url: "newnotetest.php",
-									data: postForm,
-									success: function(response) {
-										console.log(response);
-										console.log("hah");
-										// header("Location: homepage.php");
-
-									},
-									error: function(jqXHR, textStatus, errorThrown) {
-										console.log(textStatus, errorThrown);
-
-										console.log("vvvv");
-										alert(errorThrown);
-									}
+									return window.crypto.subtle.decrypt(algoEncrypt, secretKey, cipherText);
+								})
+								.then(function(plainText) {
+									console.log("Plain Text: " + arrayBufferToString(plainText));
+								})
+								.catch(function(err) {
+									console.log("Error: " + err.message);
 								});
 
-							}
+							var encodemsg = "";
+							//This generates our secret Key with key generation algorithm
+							window.crypto.subtle
+								.generateKey(algoKeyGen, false, keyUsages)
+								.then(function(key) {
+									secretKey = key;
+									//Encrypt plaintext with key and algorithm converting the plaintext to ArrayBuffer
+									return window.crypto.subtle.encrypt(
+										algoEncrypt,
+										key,
+										strToArrayBuffer(plainText)
+									);
+								})
+								.then(function(cipherText) {
+									//print out Ciphertext in console
+									encodemsg = arrayBufferToString(cipherText)
 
-						);
+									console.log("Cipher Text: " + encodemsg);
+									console.log(cipherText);
+
+									hash(plainText).then(function(hex) {
+											console.log(hex)
+
+											console.log(hex);
+											console.log("digest");
+											var postForm = { //Fetch form data
+												'message': encodemsg, //Store name fields value
+												'origin': plainText,
+												'hash': hex
+
+											};
+
+											$.ajax({
+												type: "POST",
+												url: "newnotetest.php",
+												data: postForm,
+												success: function(response) {
+													console.log(response);
+													console.log("hah");
+													// header("Location: homepage.php");
+
+												},
+												error: function(jqXHR, textStatus, errorThrown) {
+													console.log(textStatus, errorThrown);
+
+													console.log("vvvv");
+													alert(errorThrown);
+												}
+											});
+
+										}
+
+									);
 
 
-						return window.crypto.subtle.decrypt(algoEncrypt, secretKey, cipherText);
-					})
-					.then(function(plainText) {
-						console.log("Plain Text: " + arrayBufferToString(plainText));
-					})
-					.catch(function(err) {
-						console.log("Error: " + err.message);
-					});
+									return window.crypto.subtle.decrypt(algoEncrypt, secretKey, cipherText);
+								})
+								.then(function(plainText) {
+									console.log("Plain Text: " + arrayBufferToString(plainText));
+								})
+								.catch(function(err) {
+									console.log("Error: " + err.message);
+								});
 
 
-				// return false;
-				<?php header("Location: homepage.php");?>
-			});
-		}
+							// return false;
+							<?php header("Location: homepage.php"); ?>
+						});
+					};
+				}
 
-		//Syntax for encrypt function
-		// const result = crypto.subtle.encrypt(algorithm, key, data);
-		// const secure = window.crypto.getRandomValues(new Uint8Array(10));
-		// console.log(secure);
-		function decrypt(cipherText) {
-			console.log("iv decrypt ");
-			console.log(iv);
-			algoEncrypt = {
-				name: "AES-GCM",
-				iv: iv,
-				tagLength: 128,
-			};
-			//This states that the keyusage for decrypting
-			var keyUsages = ["decrypt"];
-			//This object below is for algorithm key generation
-			var algoKeyGen = {
-				name: "AES-GCM",
-				length: 256,
-			};
-			var plainText = "This is a secure message from Mary";
-			var secretKey;
-			//This will generate secrete key with algorithm key and keyusage
-			window.crypto.subtle
-				.generateKey(algoKeyGen, false, keyUsages)
-				.then(function(key) {
-					secretKey = key;
-					console.log(cipherText);
-					//This will decrypt Cipheretext to plaintext
-					return window.crypto.subtle.decrypt(algoEncrypt, secretKey, strToArrayBuffer(cipherText));
-				})
-				//  Print plaintext in console.
-				.then(function(plainText) {
+						//Syntax for encrypt function
+						// const result = crypto.subtle.encrypt(algorithm, key, data);
+						// const secure = window.crypto.getRandomValues(new Uint8Array(10));
+						// console.log(secure);
+						function decrypt(cipherText) {
+							console.log("iv decrypt ");
+							console.log(iv);
+							algoEncrypt = {
+								name: "AES-GCM",
+								iv: iv,
+								tagLength: 128,
+							};
+							//This states that the keyusage for decrypting
+							var keyUsages = ["decrypt"];
+							//This object below is for algorithm key generation
+							var algoKeyGen = {
+								name: "AES-GCM",
+								length: 256,
+							};
+							var plainText = "This is a secure message from Mary";
+							var secretKey;
+							//This will generate secrete key with algorithm key and keyusage
+							window.crypto.subtle
+								.generateKey(algoKeyGen, false, keyUsages)
+								.then(function(key) {
+									secretKey = key;
+									console.log(cipherText);
+									//This will decrypt Cipheretext to plaintext
+									return window.crypto.subtle.decrypt(algoEncrypt, secretKey, strToArrayBuffer(cipherText));
+								})
+								//  Print plaintext in console.
+								.then(function(plainText) {
 
-					console.log("Plain Text: " + arrayBufferToString(plainText));
-					return plainText;
-				})
-				.catch(function(err) {
-					console.log("Error: " + err);
-				});
-		}
+									console.log("Plain Text: " + arrayBufferToString(plainText));
+									return plainText;
+								})
+								.catch(function(err) {
+									console.log("Error: " + err);
+								});
+						}
 
-		function resetPage() {
+						function resetPage() {
 
-			localStorage.removeItem("key");
-		}
+							localStorage.removeItem("key");
+						}
 	</script>
 
 </head>
