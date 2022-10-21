@@ -33,7 +33,7 @@ $message = base64_decode($message);
 $message = private_key_decrypt($message, $server_priv_key);
 
 if (compare_hash($hash, $message)) {
-    $query = "INSERT INTO notes (message, hash_sha256) VALUES ('$message', '$hash')";
+    $query = "INSERT INTO notes (message) VALUES ('$message')";
     $result = $conn->query($query);
     mysqli_close($conn);
 } else {

@@ -110,6 +110,7 @@ if(isset($_POST['uc05']))
 		]
 	]);
 	unset($_POST['uc05']);
+	header("Location: homepage.php");
 }
 ?>
 
