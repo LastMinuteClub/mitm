@@ -73,11 +73,13 @@ echo("<br><br>" . strlen($test));
 
 echo "<br><br>";
 
+//Encodes the message in base 64
 $test = base64_encode($test);
 echo "ENCODE" . $test . "<br>";
 var_dump($test);
 echo("<br><br>" . strlen($test));
 
+//For debug
 echo "<br><br>";
 
 $test2 = base64_decode($test);
